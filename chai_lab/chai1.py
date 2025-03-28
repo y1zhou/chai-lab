@@ -503,9 +503,9 @@ def run_inference(
 ) -> StructureCandidates:
     assert num_trunk_samples > 0 and num_diffn_samples > 0
     if output_dir.exists():
-        assert not any(
-            output_dir.iterdir()
-        ), f"Output directory {output_dir} is not empty."
+        for d in output_dir.iterdir():
+            if d.name != "templates":
+                raise FileExistsError(f"Output directory {output_dir} is not empty.")
 
     torch_device = torch.device(device if device is not None else "cuda:0")
 

@@ -79,13 +79,24 @@ def parse_m8_to_template_hits(
         hit_identifier, hit_chain = row.subject_id.split("_")  # type: ignore
         assert isinstance(hit_identifier, str) and isinstance(hit_chain, str)
         with TemporaryDirectory() as tmpdir:
-            cif_file = rcsb.download_cif_file(
-                hit_identifier.upper(),
-                directory=(
-                    Path(tmpdir) if template_cif_folder is None else template_cif_folder
-                ),
-            )
+            # First check for local CIF templates
+            if (
+                template_cif_folder is not None
+                and (template_cif_folder / f"{hit_identifier.upper()}.cif").exists()
+            ):
+                cif_file = template_cif_folder / f"{hit_identifier.upper()}.cif"
+            else:
+                cif_file = rcsb.download_cif_file(
+                    hit_identifier.upper(),
+                    directory=(
+                        Path(tmpdir)
+                        if template_cif_folder is None
+                        else template_cif_folder
+                    ),
+                )
             structure = gemmi.read_structure(path=str(cif_file))
+            structure.setup_entities()
+            structure.assign_label_seq_id()
 
         chain: gemmi.Chain = structure[0][hit_chain]  # Indexes by auth chain
         # NOTE this sequence excludes unresolved residues, and adds "-" to indicate gap

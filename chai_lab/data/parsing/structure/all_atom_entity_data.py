@@ -159,7 +159,7 @@ def process_entity(
                 # All entities should have label seq at this stage
                 # since we assigned it manually for ligands earlier
                 logger.error(
-                    f"{pdb_id=}, {source_pdb_chain_id=}, gemmi subchain {subchain.subchain_id()}"
+                    f"{pdb_id=}, {source_pdb_chain_id=}, gemmi subchain {subchain.subchain_id()} "
                     "has missing label seq, skipping"
                 )
                 return None
