@@ -22,10 +22,10 @@ modelcif>=1.0      # mmcif writing, confirmed to work currently latest 1.0
 # computing, dl
 numpy~=1.21
 pandas[parquet,gcp,aws]~=2.1 
-pandera
+pandera>=0.24       # pandera.pandas requires >= 0.24
 numba>=0.59
 # polars              
 einops~=0.8
 jaxtyping>=0.2.25   # versions <0.2.25 do not easily support runtime typechecking
 beartype>=0.18      # compatible typechecker to use with jaxtyping
-torch>=2.3.1,<2.7   # 2.2 is broken, 2.3.1 is confirmed to work correctly
+torch>=2.3.1        # 2.2 is broken, latest-patch versions 2.3.1 - 2.7.1 are confirmed to work correctly
